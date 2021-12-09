@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <style>
+      #app {
+        /* animation: bonce 100ms linear infinite alternate; */
+      }
+      @keyframes bonce {
+        0% {
+          transform: skew(-2deg, 2deg) translate(4px, -4px);
+        }
+        100% {
+          transform: skew(2deg, -2deg) translate(-4px, 4px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>
+      <strong>
+        We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without
+        JavaScript enabled. Please enable it to continue.
+      </strong>
+    </noscript>
+    <div id="app" style="background: red"></div>
+    <!-- built files will be auto injected -->
+    <script>
+      window.onload = () => {
+        ztTools.use(['screenShot']).then(res => {
+          console.log(res)
+        })
+      }
+    </script>
+  </body>
+</html>
