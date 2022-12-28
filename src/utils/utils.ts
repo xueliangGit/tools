@@ -1,7 +1,7 @@
 /*
  * @Author: xuxueliang
  * @Date: 2021-12-08 10:29:58
- * @LastEditTime: 2021-12-08 13:41:50
+ * @LastEditTime: 2021-12-14 14:58:53
  * @LastEditors: xuxueliang
  * @Description:
  */
@@ -58,7 +58,7 @@ export function loadScript(url: string): Promise<any> {
   loadScriptLaoding[url] = promise
   return promise
 }
-export function dataURLtoFile(dataurl: string, filename: string = '未命名') {
+export function dataURLtoFile(dataurl: string, filename: string = '未命名'): File {
   const arr = dataurl.split(',')
   const mime = arr[0].match(/:(.*?);/)![1]
   const bstr = atob(arr[1])

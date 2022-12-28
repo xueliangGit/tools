@@ -1,7 +1,7 @@
 /*
  * @Author: xuxueliang
  * @Date: 2021-12-02 08:04:28
- * @LastEditTime: 2021-12-08 08:50:18
+ * @LastEditTime: 2021-12-14 17:25:53
  * @LastEditors: xuxueliang
  * @Description:
  */
@@ -20,6 +20,9 @@ module.exports = {
       }
       /***/
     }
+  },
+  devServer: {
+    disableHostCheck: true
   },
   css: {
     extract: false // 是否单独提取 css 文件

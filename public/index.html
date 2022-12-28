@@ -18,6 +18,9 @@
           transform: skew(2deg, -2deg) translate(-4px, 4px);
         }
       }
+      img {
+        max-width: 100%;
+      }
     </style>
   </head>
   <body>
@@ -27,13 +30,55 @@
         JavaScript enabled. Please enable it to continue.
       </strong>
     </noscript>
-    <div id="app" style="background: red"></div>
+    <div id="www"></div>
+    <div style="width: 0px; height: 0px">
+      <div id="app" onclick="doCut()" style="width: 360px; backgroundcolor: rgba(0, 0, 0, 0)">
+        <img style="width: 100%" src="./3191639618919_.pic_hd.jpg" alt="" />
+      </div>
+    </div>
+    <img src="" id="img" alt="" />
+    <a
+      target="_blank"
+      onclick="show()"
+      href="https://a.app.qq.com/o/simple.jsp?pkgname=com.chanjet.goodbusiness "
+    >
+      yybao122
+    </a>
     <!-- built files will be auto injected -->
     <script>
       window.onload = () => {
-        ztTools.use(['screenShot']).then(res => {
-          console.log(res)
+        // ztTools.use(['screenShot']).then(res => {
+        //   console.log(res)
+        // })
+        setTimeout(() => {
+          // doCut()
+        }, 100)
+      }
+      function doCut() {
+        ztTools.use(['screenShot', 'gesture']).then(res => {
+          ztTools.gesture({
+            options: {
+              12: () => {
+                console.log('1')
+              }
+            }
+          })
+          ztTools
+            .screenShot({
+              el: window.app,
+              options: { scale: 2, backgroundColor: null }
+            })
+            .then(res => {
+              console.log(res)
+              window.res = res
+              img.src = res.base64
+              // app.style.position = 'fixed'
+            })
         })
+      }
+      function show(e) {
+        // window.location.href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.chanjet.goodbusiness '
+        return
       }
     </script>
   </body>
