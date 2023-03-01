@@ -2,7 +2,7 @@ import { dataURLtoFile, loadScript } from '@/utils/utils'
 /*
  * @Author: xuxueliang
  * @Date: 2021-12-08 08:36:46
- * @LastEditTime: 2023-03-01 14:49:51
+ * @LastEditTime: 2023-03-01 15:02:32
  * @LastEditors: xuxueliang
  * @Description:
  */
@@ -15,8 +15,8 @@ interface Options {
   serverApi: string // 服务端接口 与 saveLocal互斥
   params?: object // 上传图片要添加的参数
   fileKeys?: string | 'file' // 上传文件的key，默认是file
-  use?:'domtoimage'|'html2canvas'// 使用那个库来处理，默认是html2canvas 
-  target?:'svg'|'png'|'jpeg'|'blob'|'pixeldata'//使用dom-to-image时的目标target
+  use?: 'domtoimage' | 'html2canvas' // 使用那个库来处理，默认是html2canvas
+  target?: 'svg' | 'png' | 'jpeg' | 'blob' | 'pixeldata'// 使用dom-to-image时的目标target
 }
 interface Result {
   base64: string // base64 图片
@@ -33,31 +33,31 @@ function screenShot(options: Options): Promise<Result> {
       reject()
       return
     }
-    if(options.use==='domtoimage'){
+    if (options.use === 'domtoimage') {
       loadScript(window._ztTools_path_ + 'js/dom-to-image.min.js').then(async () => {
-        let way=''
-          switch( options.target?options.target.toLocaleLowerCase():''){
-            case 'png':
-              way='toPng';
-              break;
-            case 'svg':
-              way='toSvg';
-              break;
-            case 'jpeg':
-              way='Jpeg';
-              break;
-            case 'blob':
-              way='Blob'
-              break;
-            case 'pixeldata':
-              way='toPixelData'
-              break;
-            default :
-              way='toPng';
-          }
-          window.domtoimage[way]&&window.domtoimage[way](options.el,options.options||{}).then((res:any)=>{
-            resolve(res)
-          })
+        let way = ''
+        switch (options.target ? options.target.toLocaleLowerCase() : '') {
+          case 'png':
+            way = 'toPng';
+            break;
+          case 'svg':
+            way = 'toSvg';
+            break;
+          case 'jpeg':
+            way = 'Jpeg';
+            break;
+          case 'blob':
+            way = 'Blob'
+            break;
+          case 'pixeldata':
+            way = 'toPixelData'
+            break;
+          default:
+            way = 'toPng';
+        }
+        window.domtoimage[way] && window.domtoimage[way](options.el, options.options || {}).then((res: any) => {
+          resolve(res)
+        })
       })
       return
     }
