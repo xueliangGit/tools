@@ -2,7 +2,7 @@ import { dataURLtoFile, loadScript } from '@/utils/utils'
 /*
  * @Author: xuxueliang
  * @Date: 2021-12-08 08:36:46
- * @LastEditTime: 2022-12-28 14:00:35
+ * @LastEditTime: 2023-03-01 14:49:51
  * @LastEditors: xuxueliang
  * @Description:
  */
@@ -11,10 +11,12 @@ interface Options {
   saveLocal?: boolean // 保存到本地 与 serverApi 互斥，优先级更高
   el: HTMLElement | string // 要截图的dom
   proxyStatic?: string // 静态资源代理，用于请求不同域名的资源
-  options?: object // 覆盖 html2canvas的配置
+  options?: object // 覆盖 html2canvas 或者dom-to-image的配置
   serverApi: string // 服务端接口 与 saveLocal互斥
   params?: object // 上传图片要添加的参数
   fileKeys?: string | 'file' // 上传文件的key，默认是file
+  use?:'domtoimage'|'html2canvas'// 使用那个库来处理，默认是html2canvas 
+  target?:'svg'|'png'|'jpeg'|'blob'|'pixeldata'//使用dom-to-image时的目标target
 }
 interface Result {
   base64: string // base64 图片
@@ -24,10 +26,39 @@ interface Result {
   objectURL: string // URL.createObjectURL 地址
   [propName: string]: any
 }
-export default function (options: Options): Promise<Result> {
+// dom-to-image.min.js
+function screenShot(options: Options): Promise<Result> {
   return new Promise((resolve, reject) => {
     if (!options.el) {
       reject()
+      return
+    }
+    if(options.use==='domtoimage'){
+      loadScript(window._ztTools_path_ + 'js/dom-to-image.min.js').then(async () => {
+        let way=''
+          switch( options.target?options.target.toLocaleLowerCase():''){
+            case 'png':
+              way='toPng';
+              break;
+            case 'svg':
+              way='toSvg';
+              break;
+            case 'jpeg':
+              way='Jpeg';
+              break;
+            case 'blob':
+              way='Blob'
+              break;
+            case 'pixeldata':
+              way='toPixelData'
+              break;
+            default :
+              way='toPng';
+          }
+          window.domtoimage[way]&&window.domtoimage[way](options.el,options.options||{}).then((res:any)=>{
+            resolve(res)
+          })
+      })
       return
     }
     const { el, proxyStatic = '', name = '未命名', params = {}, fileKeys = 'file',
@@ -37,7 +68,7 @@ export default function (options: Options): Promise<Result> {
     if (typeof el === 'string') {
       elm = <HTMLElement>document.querySelector(el)
     }
-    loadScript(window._ztTools_path_ + 'js/html2canvas.js').then(async () => {
+    loadScript(window._ztTools_path_ + 'js/html2canvas.min.js').then(async () => {
       const canvas: HTMLCanvasElement = await window.html2canvas(elm, {
         allowTaint: false,
         useCORS: false,
@@ -123,3 +154,4 @@ function imageBase64ToBlob(urlData: string, type: string = 'image/png') {
     })
   }
 }
+export default screenShot
