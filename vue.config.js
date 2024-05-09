@@ -1,7 +1,7 @@
 /*
  * @Author: xuxueliang
  * @Date: 2021-12-02 08:04:28
- * @LastEditTime: 2021-12-14 17:25:53
+ * @LastEditTime: 2024-05-06 10:31:04
  * @LastEditors: xuxueliang
  * @Description:
  */
@@ -10,7 +10,7 @@ module.exports = {
     output: {
       filename: 'ztTools.js',
       chunkFilename: 'js/[chunkhash:16].js',
-      libraryTarget: 'var',
+      libraryTarget: 'window',
       library: 'ztTools'
     },
     optimization: {
